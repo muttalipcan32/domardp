@@ -1,0 +1,31 @@
+# This is a basic workflow to help you get started with Actions
+
+name: Windows-CRD
+
+on: 
+  workflow_dispatch:
+    inputs:
+      authcode:
+        description: '& "${Env:PROGRAMFILES(X86)}\Google\Chrome Remote Desktop\CurrentVersion\remoting_start_host.exe" --code="4/0AVHEtk5oCg3ZlhSg-_U4SGM3E0699PMShLG8ZPC6shwncLUQZUn0Rds72SNZmdAU3sM8YA" --redirect-url="https://remotedesktop.google.com/_/oauthredirect" --name=$Env:COMPUTERNAME'
+        required: true
+      pincode:
+        description: '123456'
+        required: true
+  
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Initializing Setup
+      run: ./setup.ps1
+    - name: Starting CRD 
+      run: ${{ github.event.inputs.authcode }} -pin=${{ github.event.inputs.pincode }}
+    - name: Keep Alive
+      run: ./timeout.ps1
+
+  
+    
+
+  
